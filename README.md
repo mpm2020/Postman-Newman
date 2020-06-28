@@ -1,2 +1,2 @@
 # Postman-Newman
-How to write API Tests with Postman and Newman
+Automation API Tests with Postman and Newman
