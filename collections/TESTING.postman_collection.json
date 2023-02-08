@@ -45,7 +45,7 @@
 							"\r",
 							"    const responseJson = pm.response.json();\r",
 							"    //console.log(responseJson.total);\r",
-							"    if (responseJson.total===13)\r",
+							"    if (responseJson.total===12)\r",
 							"    {\r",
 							"       console.log(responseJson.total);\r",
 							"    }\r",
