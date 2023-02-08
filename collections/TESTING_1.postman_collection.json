@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "a56a43c3-07e6-4b86-95e1-a8f42df9940e",
+		"_postman_id": "f62099b2-4078-e162-ac98-35dda2d43806",
 		"name": "TESTING",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "11768802"
@@ -44,26 +44,12 @@
 							"pm.test(\"Test 6: Respuesta tiene propiedades \", function () {\r",
 							"\r",
 							"    const responseJson = pm.response.json();\r",
-							"    //console.log(responseJson.total);\r",
-							"    if (responseJson.total===12)\r",
-							"    {\r",
-							"       console.log(responseJson.total);\r",
-							"    }\r",
-							"\r",
-							"    else\r",
-							"\r",
-							"    {\r",
-							"        pm.expect.fail(\"Error\");\r",
-							"    }\r",
-							"    //pm.expect(responseJson.total).to.eql(12);\r",
-							"    //pm.expect(responseJson.per_page).to.be.a('number');\r",
-							"    //pm.response.to.be.withBody; \r",
-							"    //pm.response.to.be.json;\r",
+							"    pm.expect(responseJson.total).to.eql(12);\r",
+							"    pm.expect(responseJson.per_page).to.be.a('number');\r",
+							"    pm.response.to.be.withBody; \r",
+							"    pm.response.to.be.json;\r",
 							"\r",
 							"});\r",
-							"\r",
-							"\r",
-							"\r",
 							""
 						],
 						"type": "text/javascript"
@@ -87,67 +73,82 @@
 			"response": []
 		},
 		{
-			"name": "List Users_localhost",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"\r",
-							"var jsonData = pm.response.json();\r",
-							"\r",
-							"function getRandomInt(min, max) {\r",
-							"  return Math.floor(Math.random() * (max - min)) + min;\r",
-							"}\r",
-							"\r",
-							"function RandomIDGenerator(jsonData) {\r",
-							"var jsonData = pm.response.json();\r",
-							"  var i = getRandomInt(0, jsonData.length);\r",
-							"  return jsonData[i].id;\r",
-							"    //return jsonData[i];\r",
-							"};\r",
-							"pm.collectionVariables.set(\"id\",RandomIDGenerator());\r",
-							"console.log(pm.collectionVariables.get(\"id\"));"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/data",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"data"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get Single User",
 			"event": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"//Valid Schema\r",
+							"//Respond\r",
+							"var jsonData=pm.response.json();\r",
+							"//Assign schema in a variable\r",
+							"var schema={\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"data\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"id\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"email\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"first_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"last_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"avatar\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"id\",\r",
+							"        \"email\",\r",
+							"        \"first_name\",\r",
+							"        \"last_name\",\r",
+							"        \"avatar\"\r",
+							"      ]\r",
+							"    },\r",
+							"    \"ad\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"company\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"url\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"text\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"company\",\r",
+							"        \"url\",\r",
+							"        \"text\"\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"data\",\r",
+							"    \"ad\"\r",
+							"  ]\r",
+							"};\r",
+							"pm.test(\"Schema is valid\", function(){\r",
+							" pm.expect(tv4.validate(jsonData,schema)).to.be.true;\r",
+							"});\r",
+							"pm.test(\"Response body is valid\", function() {\r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  var valid = tv4.validate(data, schema, false, true);\r",
+							"  if (valid !== true) {\r",
+							"      console.log(tv4.error);\r",
+							"  }\r",
+							"  pm.expect(valid).to.be.true;\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -158,14 +159,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/api/users/{{id}}",
+					"raw": "{{base_url}}/api/users/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"api",
 						"users",
-						"{{id}}"
+						"2"
 					]
 				}
 			},
@@ -178,7 +179,77 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							""
+							"//Valid Schema\r",
+							"//Respond\r",
+							"var jsonData=pm.response.json();\r",
+							"//Assign schema in a variable\r",
+							"var schema={\r",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"data\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"id\": {\r",
+							"          \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"email\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"first_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"last_name\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"avatar\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"id\",\r",
+							"        \"email\",\r",
+							"        \"first_name\",\r",
+							"        \"last_name\",\r",
+							"        \"avatar\"\r",
+							"      ]\r",
+							"    },\r",
+							"    \"ad\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"company\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"url\": {\r",
+							"          \"type\": \"string\"\r",
+							"        },\r",
+							"        \"text\": {\r",
+							"          \"type\": \"string\"\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"company\",\r",
+							"        \"url\",\r",
+							"        \"text\"\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"data\",\r",
+							"    \"ad\"\r",
+							"  ]\r",
+							"};\r",
+							"pm.test(\"Schema is valid\", function(){\r",
+							" pm.expect(tv4.validate(jsonData,schema)).to.be.true;\r",
+							"});\r",
+							"pm.test(\"Response body is valid\", function() {\r",
+							"  var data = JSON.parse(responseBody);\r",
+							"  var valid = tv4.validate(data, schema, false, true);\r",
+							"  if (valid !== true) {\r",
+							"      console.log(tv4.error);\r",
+							"  }\r",
+							"  pm.expect(valid).to.be.true;\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -504,12 +575,6 @@
 				}
 			},
 			"response": []
-		}
-	],
-	"variable": [
-		{
-			"key": "id",
-			"value": ""
 		}
 	]
 }
