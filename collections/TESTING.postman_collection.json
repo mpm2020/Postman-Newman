@@ -1,0 +1,515 @@
+{
+	"info": {
+		"_postman_id": "a56a43c3-07e6-4b86-95e1-a8f42df9940e",
+		"name": "TESTING",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11768802"
+	},
+	"item": [
+		{
+			"name": "List Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" //Esto chequea el codigo de estado\r",
+							"pm.test(\"Test 1: 200 ok codigo de estado\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//Esto chequea el tiempo de respuesta\r",
+							"pm.test(\"Test 2: Tiempo de respuesta is menor a 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"//Esto chequea texto dentro de la respuesta\r",
+							"pm.test(\"Test 3: Respuesta contiene un texto que diga data\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"data\");\r",
+							"});\r",
+							"\r",
+							"//Esto chequea el Header del response\r",
+							"pm.test(\"Test 4: Content-Type header\", function () {\r",
+							"     pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"//Esto chequea que la respuesta tenga una llave igual a determinado dato\r",
+							"pm.test(\"Test 5: Respuesta contiene apellido Holt para Eve \", function () {\r",
+							"      // obtener datos de la API en jsonData\r",
+							"    var jsonData=pm.response.json();  \r",
+							"     pm.expect(jsonData.data[3].last_name).to.eql(\"Holt\");\r",
+							"});\r",
+							"\r",
+							"//Aserciones multiples\r",
+							"pm.test(\"Test 6: Respuesta tiene propiedades \", function () {\r",
+							"\r",
+							"    const responseJson = pm.response.json();\r",
+							"    //console.log(responseJson.total);\r",
+							"    if (responseJson.total===13)\r",
+							"    {\r",
+							"       console.log(responseJson.total);\r",
+							"    }\r",
+							"\r",
+							"    else\r",
+							"\r",
+							"    {\r",
+							"        pm.expect.fail(\"Error\");\r",
+							"    }\r",
+							"    //pm.expect(responseJson.total).to.eql(12);\r",
+							"    //pm.expect(responseJson.per_page).to.be.a('number');\r",
+							"    //pm.response.to.be.withBody; \r",
+							"    //pm.response.to.be.json;\r",
+							"\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Users_localhost",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"function getRandomInt(min, max) {\r",
+							"  return Math.floor(Math.random() * (max - min)) + min;\r",
+							"}\r",
+							"\r",
+							"function RandomIDGenerator(jsonData) {\r",
+							"var jsonData = pm.response.json();\r",
+							"  var i = getRandomInt(0, jsonData.length);\r",
+							"  return jsonData[i].id;\r",
+							"    //return jsonData[i];\r",
+							"};\r",
+							"pm.collectionVariables.set(\"id\",RandomIDGenerator());\r",
+							"console.log(pm.collectionVariables.get(\"id\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/data",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Single User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/users/{{id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Delay Response",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/users/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Google",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.google.com/search?q=ToolsQA",
+					"protocol": "https",
+					"host": [
+						"www",
+						"google",
+						"com"
+					],
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "ToolsQA"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Google multi params",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.google.co.in/search?q=toolsqa&oq=toolsqa&aqs=chrome..69i57j69i60l5.2885j0j4&sourceid=chrome&ie=UTF-8",
+					"protocol": "https",
+					"host": [
+						"www",
+						"google",
+						"co",
+						"in"
+					],
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "toolsqa"
+						},
+						{
+							"key": "oq",
+							"value": "toolsqa"
+						},
+						{
+							"key": "aqs",
+							"value": "chrome..69i57j69i60l5.2885j0j4"
+						},
+						{
+							"key": "sourceid",
+							"value": "chrome"
+						},
+						{
+							"key": "ie",
+							"value": "UTF-8"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Google multi params Bulk Edit",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://www.google.com/search?q=toolsqa&oq=toolsqa&aqs=chrome..69i57j69i60l5.2885j0j4&sourceid=chrome&ie=UTF-8",
+					"protocol": "https",
+					"host": [
+						"www",
+						"google",
+						"com"
+					],
+					"path": [
+						"search"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "toolsqa"
+						},
+						{
+							"key": "oq",
+							"value": "toolsqa"
+						},
+						{
+							"key": "aqs",
+							"value": "chrome..69i57j69i60l5.2885j0j4"
+						},
+						{
+							"key": "sourceid",
+							"value": "chrome"
+						},
+						{
+							"key": "ie",
+							"value": "UTF-8"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"morpheus\",\r\n    \"job\": \"leader\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/users",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Successful",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Unsuccessful",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Valid Status Code\r",
+							"pm.test (\"Bad Request\", function () {\r",
+							"     pm.response.to.be.badRequest; \r",
+							"     pm.response.to.have.status(400);\r",
+							"     });\r",
+							"//Valid Response Type\r",
+							"pm.test(\"Is Json?\", function () {\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"//Valid Response Time\r",
+							"pm.test (\"Response Time less than 600 ms\", function () {\r",
+							"     pm.expect(pm.response.responseTime).to.be.below (600); });\r",
+							"//Valid Error Message\r",
+							"pm.test(\"Missing Password\", function () {\r",
+							"     pm.expect(pm.response.text()).to.include (\"Missing password\");\r",
+							"})\r",
+							"pm.test(\"Body is string\", function () {\r",
+							"  pm.response.to.have.body('{\"error\":\"Missing password\"}');\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Seteo variable \r",
+							"var jsonData = pm.response.json ();\r",
+							"pm.environment.set ('userId', jsonData.id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"pistol\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/users/{{userId}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": ""
+		}
+	]
+}
