@@ -4,7 +4,7 @@ pipeline {
     stage('run collection') {
       steps {
         bat 'docker run -t postman/newman run -h'
-        bat 'docker run -v ${pwd}:/etc/newman --workdir /etc/newman -t postman/newman run collection-1.json --color off --disable-unicode'
+        bat 'docker run -v "${pwd}":/etc/newman --workdir /etc/newman -t postman/newman run collection-1.json --color off --disable-unicode'
       }
     }
   }
