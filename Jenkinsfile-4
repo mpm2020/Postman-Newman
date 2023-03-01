@@ -1,0 +1,11 @@
+pipeline {
+  agent any
+  stages {
+    stage('run collection') {
+      steps {
+        bat 'docker run -t postman/newman run -h'
+        bat 'docker run -v %cd%:/etc/newman --workdir /etc/newman -t postman/newman run collection-2.json --color off --disable-unicode'
+      }
+    }
+  }
+}
