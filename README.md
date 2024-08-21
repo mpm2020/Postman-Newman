@@ -24,3 +24,6 @@ npm i newman -g
 ```bash
 newman run -e EnviornmentName.json CollectionName.json
 ```
+
+## Integración con GitHub Actions
+Este proyecto utiliza GitHub Actions para automatizar las pruebas de API con Postman y Newman.
